@@ -57,8 +57,23 @@ app.get("/", (req, res) => {
     // Basically, we check if there is a carrier specified, if not, do any
     const carrier = req.query.carrier || "any";
 
-    // Generate and send
-    res.send(generateNumber(carrier));
+    // Check if amount is specified, if not, do one.
+    const amount = req.query.amount || 1;
+
+    // Just a check if the carrier is not valid
+    if (!carriers.includes(carrier) && carrier !== "any") {
+        res.send("Invalid carrier, valid carriers are stc, salam, zain, mobily, virgin, redbull, and lebara.");
+    }
+
+    let numbers = []
+
+    // Generate
+    for (let i = 0; i < amount; i++) {
+        numbers += generateNumber(carrier) + "\n";
+    }
+
+    // Send
+    res.send(numbers);
 });
 
 // Listener function
